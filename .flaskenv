@@ -1,0 +1,2 @@
+FLASK_APP=ajax.py
+FLASK_ENV=development

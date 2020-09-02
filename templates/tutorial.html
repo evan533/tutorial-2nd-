@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <h1>Human Data</h1>
+        
+    </head>
+    <body>
+        <div id="data_holder"></div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: '/getData'
+            }).done(function(json){
+                for(i=0;i<json.length;i++){
+                    var par = $('<p>Name: '+ json[i].name +'  Height: '+ json[i].height +' Gender: '+ json[i].gender +'</p>')
+                    console.log(json[i])
+                    par.appendTo($('#data_holder'))
+                }
+            })
+        </script>
+    </body>
+</html>

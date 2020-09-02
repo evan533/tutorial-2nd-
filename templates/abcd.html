@@ -1,0 +1,65 @@
+<html>
+    <head>
+
+        <script src="https://rawgit.com/jdorn/json-editor/master/dist/jsoneditor.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Basic JSON Editor</h1>
+        <div id="editor_holder"></div>
+        <button id="submit">Submit</button>
+        <button id="restore">Restore</button>
+    
+        
+        <script>
+            var element  = document.getElementById('editor_holder')
+
+            var starting_value = {
+                height: 0,
+                name: '',
+                gender: 'male'
+            };
+
+            var editor = new JSONEditor(element, {
+                ajax: true,
+                schema: {
+                    type: 'object',
+                    title: 'human',
+                    properties: {
+                        'height':{
+                            'type': 'integer'
+                        },
+                        'name':{
+                            'type': 'string'
+                        },
+                        'gender':{
+                            'type': 'string',
+                            'enum':['male', 'female']
+                        }
+                    }
+                }
+            });
+
+            editor.on('ready', function(){
+                document.getElementById('submit').addEventListener('click', function(){
+                    console.log(editor.getValue());
+                    //$.post('/getData',editor.getValue(),function(data,status){alert("Data: " + data + "\nStatus: " + status)})
+                    $.ajax({
+                        type: 'POST',
+                        url: '/sendData',
+                        data: editor.getValue(),
+                        success: function(data,status){
+                            alert("Data: " + data + "\nStatus: " + status)
+                        }
+                    })
+                })
+                document.getElementById('restore').addEventListener('click', function(){
+                    editor.setValue(starting_value);
+                })
+            })
+            
+
+            
+        </script>
+    </body>
+</html>
